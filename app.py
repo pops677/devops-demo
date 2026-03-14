@@ -1,14 +1,14 @@
-import time
-import sys
+import os
+import datetime
+from flask import Flask
 
-def main():
-    print("Hello from Docker!", flush=True)
-    print(f"Python version: {sys.version}", flush=True)
-    counter = 0
-    while True:
-        print(f"alive... ({counter})", flush=True)
-        counter += 1
-        time.sleep(10)
+app = Flask(__name__)
 
-if __name__ == "__main__":
-    main()
+@app.route('/')
+def hello():
+    name = os.getenv('NAME', 'World')
+    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return f"Hello, {name}! Current time: {current_time}"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

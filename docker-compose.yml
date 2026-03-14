@@ -1,0 +1,27 @@
+services:
+  app:
+    build: .
+    container_name: my-app
+    environment:
+      - NAME=DevOpsStudent
+    networks:
+      - devops-net
+    # Для отладки можно раскомментировать следующую строку, чтобы проверить Flask напрямую
+    # ports:
+    #   - "5000:5000"
+
+  web:
+    image: nginx:alpine
+    container_name: my-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - devops-net
+    depends_on:
+      - app
+
+networks:
+  devops-net:
+    driver: bridge
